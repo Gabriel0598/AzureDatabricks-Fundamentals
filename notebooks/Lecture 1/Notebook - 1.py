@@ -213,3 +213,7 @@ val datastream = newFireDF.writeStream.format("console").outputMode("append").op
 
 # COMMAND ----------
 
+print("CI")
+
+# COMMAND ----------
+
