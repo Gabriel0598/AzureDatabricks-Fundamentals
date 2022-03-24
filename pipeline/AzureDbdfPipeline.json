@@ -1,0 +1,55 @@
+{
+	"name": "AzureDbdfPipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "Notebook - 1",
+				"type": "DatabricksNotebook",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Lecture 1/Notebook - 1"
+				},
+				"linkedServiceName": {
+					"referenceName": "LinkedServiceDB",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Streaming App",
+				"type": "DatabricksNotebook",
+				"dependsOn": [
+					{
+						"activity": "Notebook - 1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/Lecture 1/Notebook - 2"
+				},
+				"linkedServiceName": {
+					"referenceName": "LinkedServiceDB",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"annotations": []
+	}
+}
