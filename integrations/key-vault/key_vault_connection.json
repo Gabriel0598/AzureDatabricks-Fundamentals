@@ -1,0 +1,32 @@
+from azure.keyvault.secrets import SecretClient
+from azure.identity import DefaultAzureCredential
+
+def get_databricks_token_from_keyvault():
+    """
+    Retrieve Databricks token from Azure Key Vault
+    """
+    try:
+        # Use managed identity or Azure CLI credentials
+        credential = DefaultAzureCredential()
+        
+        # Your Key Vault URL
+        vault_url = os.getenv('AZURE_KEY_VAULT_URL', 'https://your-keyvault.vault.azure.net/')
+        
+        client = SecretClient(vault_url=vault_url, credential=credential)
+        
+        # Retrieve the secret
+        secret = client.get_secret("databricks-token")
+        return secret.value
+        
+    except Exception as e:
+        print(f"Error retrieving token from Key Vault: {e}")
+        raise
+
+def get_secure_databricks_client():
+    """
+    Get Databricks client using Azure Key Vault for token storage
+    """
+    host = os.getenv('DATABRICKS_HOST')
+    token = get_databricks_token_from_keyvault()
+    
+    return WorkspaceClient(host=host, token=token)
